@@ -2,20 +2,20 @@ import * as hre from 'hardhat';
 import * as fs from 'fs';
 import { exec as _exec, spawn as _spawn } from 'child_process';
 
-import { getZksolcPath, getZksolcUrl, saltFromUrl } from '@matterlabs/hardhat-zksync-solc';
+// import { getZksolcPath, getZksolcUrl, saltFromUrl } from '@matterlabs/hardhat-zksync-solc';
 
-const COMPILER_VERSION = '1.3.11';
-const IS_COMPILER_PRE_RELEASE = false;
+// const COMPILER_VERSION = '1.3.11';
+// const IS_COMPILER_PRE_RELEASE = false;
 
-async function compilerLocation(): Promise<string> {
-    if(IS_COMPILER_PRE_RELEASE) {
-        const url = getZksolcUrl('https://github.com/matter-labs/zksolc-prerelease', hre.config.zksolc.version);
-        const salt = saltFromUrl(url);
-        return await getZksolcPath(COMPILER_VERSION, salt);
-    } else {
-        return await getZksolcPath(COMPILER_VERSION, '');
-    }
-}
+// async function compilerLocation(): Promise<string> {
+//     if(IS_COMPILER_PRE_RELEASE) {
+//         const url = getZksolcUrl('https://github.com/matter-labs/zksolc-prerelease', hre.config.zksolc.version);
+//         const salt = saltFromUrl(url);
+//         return await getZksolcPath(COMPILER_VERSION, salt);
+//     } else {
+//         return await getZksolcPath(COMPILER_VERSION, '');
+//     }
+// }
 
 // executes a command in a new shell
 // but pipes data to parent's stdout/stderr
@@ -37,9 +37,9 @@ export async function compileYul(path: string, files: string[], outputDirName: s
     }
     let paths = preparePaths(path, files, outputDirName);
 
-    const zksolcLocation = await compilerLocation();
+    // const zksolcLocation = await compilerLocation();
     await spawn(
-        `${zksolcLocation} ${paths.absolutePathSources}/${paths.outputDir} --optimization 3 --system-mode --yul --bin --overwrite -o ${paths.absolutePathArtifacts}/${paths.outputDir}`
+        `/usr/bin/zksolc ${paths.absolutePathSources}/${paths.outputDir} --optimization 3 --system-mode --yul --bin --overwrite -o ${paths.absolutePathArtifacts}/${paths.outputDir}`
     );
 }
 
